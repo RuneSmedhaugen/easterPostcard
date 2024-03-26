@@ -8,7 +8,7 @@ function handleSubmit(event) {
     newCards.receiver = document.getElementById('receiver').value;
     newCards.sender = document.getElementById('sender').value;
     newCards.message = document.getElementById('message').value;
-    savedCards.push({ ...newCards }); // Save a copy of newCards object
+    savedCards.push({ ...newCards });
     loadCardData();
     emptyInputFields();
 }
