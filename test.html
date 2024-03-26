@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="postcard" class="postcard">
+        <div class="front">
+            <form id="cardForm" onsubmit="handleSubmit(event)">
+                <label for="imageUrl">Image URL:</label>
+                <input type="text" id="imageUrl" name="imageUrl" required><br>
+                <label for="receiver">Receiver:</label>
+                <input type="text" id="receiver" name="receiver" required><br>
+                <label for="sender">Sender:</label>
+                <input type="text" id="sender" name="sender" required><br>
+                <label for="message">Message:</label>
+                <textarea id="message" name="message" required></textarea><br>
+                <button type="submit">Create card</button>
+            </form>
+        </div>
+    </div>
+    <div id="alreadyMadeCards" class="made-cards">
+        <h2>Already made cards:</h2>
+        <div id="cardList"></div>
+    </div>
+
+    <script>
+       let savedCards = [];
+
+function handleSubmit(event) {
+    event.preventDefault();
+    const imageUrl = document.getElementById('imageUrl').value;
+    const receiver = document.getElementById('receiver').value;
+    const sender = document.getElementById('sender').value;
+    const message = document.getElementById('message').value;
+    savedCards.push({ imageUrl, receiver, sender, message });
+    loadCardData();
+}
+
+function loadCardData() {
+    const cardListElement = document.getElementById('cardList');
+    cardListElement.innerHTML = '';
+    savedCards.forEach(card => {
+        const cardElement = document.createElement('div');
+        cardElement.classList.add('card');
+        cardElement.innerHTML = `
+            <h3>Receiver: ${card.receiver}</h3>
+            <p>Sender: ${card.sender}</p>
+            <p>Message: ${card.message}</p>
+        `;
+        cardElement.addEventListener('click', () => toggleCardImage(cardElement, card.imageUrl));
+        cardListElement.appendChild(cardElement);
+    });
+}
+
+function toggleCardImage(cardElement, card) {
+    const existingImage = cardElement.querySelector('img');
+    if (existingImage) {
+        existingImage.remove();
+        const textContent = `
+            <h3>Receiver: ${card.receiver}</h3>
+            <p>Sender: ${card.sender}</p>
+            <p>Message: ${card.message}</p>
+        `;
+        cardElement.insertAdjacentHTML('beforeend', textContent);
+    } else {
+        cardElement.innerHTML = '';
+        const imageElement = document.createElement('img');
+        imageElement.src = card.imageUrl;
+        imageElement.alt = 'Card Image';
+        cardElement.appendChild(imageElement);
+    }
+}
+
+
+    </script>
+</body>
+</html>
